@@ -1,10 +1,12 @@
 [![Build Status](https://travis-ci.com/style-tools/async-iife.svg?branch=master)](https://travis-ci.com/style-tools/async-iife) [![Version](https://img.shields.io/github/release/style-tools/async-iife.svg)](https://github.com/style-tools/async-iife/releases) [![npm version](https://badge.fury.io/js/%40style.tools%2Fasync-iife.svg)](http://badge.fury.io/js/%40style.tools%2Fasync-iife)
 
-# IIFE generator for Async CSS and Script Loader
+# IIFE generator
 
-A Node.js IIFE generator for [async](https://github.com/style-tools/async).
+A Node.js IIFE generator for [@style.tools/async](https://github.com/style-tools/async).
 
 The generator is available online on [https://style.tools/iife/](https://style.tools/iife/)
+
+#### Documentation is available on [docs.style.tools/async/iife-generator](https://docs.style.tools/async/iife-generator).
 
 ---
 
