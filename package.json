@@ -30,7 +30,7 @@
         "node": "~8"
     },
     "dependencies": {
-        "@style.tools/async": "^1.0.2",
+        "@style.tools/async": "1.0.2",
         "commander": "^2.19.0",
         "console.table": "^0.10.0",
         "md5": "^2.2.1",
