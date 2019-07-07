@@ -1,6 +1,6 @@
 {
     "name": "@style.tools/async-iife",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Node.js IIFE generator for @style.tools/async. Module and CLI program.",
     "author": {
         "name": "info@style.tools",
@@ -30,7 +30,7 @@
         "node": "~8"
     },
     "dependencies": {
-        "@style.tools/async": "^1.0.1",
+        "@style.tools/async": "https://modules.style.tools/async/1.0.2.tar.gz",
         "commander": "^2.19.0",
         "console.table": "^0.10.0",
         "md5": "^2.2.1",

@@ -15,6 +15,7 @@ var iife = (function() {
             if (src in sources) {
                 return resolve(sources[src]);
             }
+            
             fetch('node_modules/@style.tools/async/' + src).then(function(res) {
 
                 res.text().then(function(text) {
@@ -287,7 +288,7 @@ var iife = (function() {
                             if (compress) {
 
                                 // get externs
-                                get_source('async-css.ext.js').then(function(externs_js) {
+                                get_source('async.ext.js').then(function(externs_js) {
 
                                     var gcc_options = {
                                         'compilation_level': 'ADVANCED_OPTIMIZATIONS',
