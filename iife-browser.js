@@ -49,10 +49,12 @@ var iife = (function() {
                 _index = {};
                 get_source('src/compression-index.json').then(function(src) {
                     var index = JSON.parse(src);
+                    var _i = 0;
                     for (var group in index) {
                         if (index.hasOwnProperty(group)) {
                             for (var i = 0, l = index[group].length; i < l; i++) {
-                                _index[index[group][i]] = i;
+                                _index[index[group][i]] = _i;
+                                _i++;
                             }
                         }
                     }
@@ -151,7 +153,7 @@ var iife = (function() {
                                 'attributes'
                             ].indexOf(key) === -1
                         ) {
-                            config[key] = data = index[data];
+                            config[key] = data = index(data);
                         }
 
                         if (index(key, 1) !== false) {

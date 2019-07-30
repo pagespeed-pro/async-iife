@@ -262,12 +262,10 @@ describe('Config compressor tests', function() {
             }
         }], false, "https://domain.com/");
 
-        assert.equal(compressed, '["test1.css",{"4":"test2.css","12":{"0":".element-in-view"}}]');
+        assert.equal(compressed, '["test1.css",{"4":"test2.css","60":{"89":".element-in-view"}}]');
 
         done();
     });
-
-
 
     it('Compress for data-c attribute with Javascript loader config at slot 4', function(done) {
         var compressed = iife.compress(["https://domain.com/test1.css", {
@@ -295,7 +293,7 @@ describe('Config compressor tests', function() {
             }
         }], "https://domain.com/");
 
-        assert.equal(compressed, '[["test1.css",{"4":"test2.css","12":{"0":".element-in-view"}}],0,0,0,["test.js",{"5":"test-dep.js","16":"dep"},{"0":{"8":4},"5":"test2.js","12":{},"14":{"data-custom-attr":"test"},"15":"dep"}]]');
+        assert.equal(compressed, '[["test1.css",{"4":"test2.css","60":{"89":".element-in-view"}}],0,0,0,["test.js",{"5":"test-dep.js","16":"dep"},{"5":"test2.js","14":{"data-custom-attr":"test"},"15":"dep","48":{"56":4},"60":{}}]]');
 
         done();
     });

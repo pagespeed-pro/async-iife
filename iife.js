@@ -396,10 +396,12 @@ class Compressor {
 
         this._index = {};
         var index = JSON.parse(this.sources.index);
+        var _i = 0;
         for (var group in index) {
             if (index.hasOwnProperty(group)) {
                 for (var i = 0, l = index[group].length; i < l; i++) {
-                    this._index[index[group][i]] = i;
+                    this._index[index[group][i]] = _i;
+                    _i++;
                 }
             }
         }
