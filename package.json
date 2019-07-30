@@ -1,6 +1,6 @@
 {
     "name": "@style.tools/async-iife",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Node.js IIFE generator for @style.tools/async. Module and CLI program.",
     "author": {
         "name": "info@style.tools",
@@ -46,6 +46,7 @@
     },
     "scripts": {
         "test": "./node_modules/.bin/mocha test/specs/tests.js",
-        "iife": "node ./iife-cli.js"
+        "iife": "node ./iife-cli.js",
+        "compress": "node ./compress-cli.js"
     }
 }

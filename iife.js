@@ -35,6 +35,7 @@ function load_sources(root_path) {
         path: root_path,
         pack: JSON.parse(fs.readFileSync(resolver('package.json'), 'utf8')),
         externs: fs.readFileSync(resolver('async.ext.js'), 'utf8'),
+        index: fs.readFileSync(resolver('src/compression-index.json'), 'utf8'),
         dist: {},
         debug: {}
     };
@@ -385,13 +386,186 @@ class IIFE_Generator {
     }
 }
 
+
+// config compressor
+class Compressor {
+    constructor(options) {
+
+        // load package and module sources
+        this.sources = load_sources(options.root_path || false);
+
+        this._index = {};
+        var index = JSON.parse(this.sources.index);
+        for (var group in index) {
+            if (index.hasOwnProperty(group)) {
+                for (var i = 0, l = index[group].length; i < l; i++) {
+                    this._index[index[group][i]] = i;
+                }
+            }
+        }
+    }
+
+    // compress config
+    compress(config, js_config, global_base = false) {
+
+        if (config === null) {
+            config = [];
+        }
+
+        if (typeof config === 'string') {
+            try {
+                var json = JSON.parse(config);
+                config = json;
+            } catch (e) {
+
+            }
+        }
+
+        if (!config) {
+            return config;
+        }
+
+        var compressed = [];
+
+        var is_global = false;
+        if (global_base) {
+
+            // trailingslash
+            if (global_base.substr(-1) !== '/') {
+                global_base += '/';
+            }
+        }
+
+        if (config instanceof Array) {
+            for (var i = 0, l = config.length; i < l; i++) {
+                config[i] = this.compress(config[i], false, global_base);
+            }
+        } else {
+
+            if (typeof config === 'object') {
+                var data;
+                for (var key in config) {
+                    if (config.hasOwnProperty(key)) {
+                        data = config[key];
+
+                        // compress base href
+                        if (['href', 'src'].indexOf(key) !== -1 && typeof data === 'string' && global_base) {
+
+                            if (data.indexOf(global_base) === 0) {
+                                data = data.replace(global_base, '', data);
+                            }
+                        }
+
+                        // cache source array
+                        if (key === 'source') {
+                            valid = ['xhr', 'cors', 'cssText'];
+                            if (typeof data === 'string' && valid.indexOf(data) !== -1) {
+                                config[key] = data = this.index(data);
+                            } else if (typeof data === 'object') {
+                                var value;
+                                for (var _key in data) {
+                                    if (data.hasOwnProperty(_key)) {
+                                        value = data[_key];
+                                        if (typeof value === 'string' && valid.indexOf(value) !== -1) {
+                                            data[_key] = this.index(value);
+                                        }
+                                    }
+                                }
+                                config[key] = data;
+                            }
+                        }
+
+                        // deep array
+                        if (typeof data === 'object' && ['proxy', 'attributes'].indexOf(key) === -1) {
+                            config[key] = data = this.compress(data, false, global_base);
+                        }
+
+                        // data
+                        if (typeof data === 'string' && this.index(data, 1) !== false &&
+                            [
+                                'href',
+                                'src',
+                                'match',
+                                'proxy',
+                                'search',
+                                'replace',
+                                'attributes'
+                            ].indexOf(key) === -1
+                        ) {
+                            config[key] = data = this.index[data];
+                        }
+
+                        if (this.index(key, 1) !== false) {
+                            config[this.index(key)] = data;
+
+                            delete config[key];
+                        }
+                    }
+                }
+            } else if (typeof config === 'string' && global_base) {
+                if (config.indexOf(global_base) === 0) {
+                    config = config.replace(global_base, '', config);
+                }
+            }
+        }
+
+        // add javascript loader config at data-c slot 5 t/m 8
+        if (js_config) {
+            config = [config];
+            var _compressed = [this.compress(js_config, false, global_base)];
+            if (_compressed) {
+                var l = 7 - (4 - _compressed.length);
+                for (var i = 0; i <= l; i++) {
+                    if (i < 4) {
+                        if (typeof config[i] === 'undefined' || !config[i]) {
+                            config[i] = 0;
+                        }
+                    } else {
+                        config[i] = _compressed[i - 4];
+                    }
+                }
+            }
+        }
+
+        return config;
+    }
+
+
+    // return compressed index by key
+    index(key, exists) {
+
+        if (key in this._index) {
+            return this._index[key];
+        }
+
+        if (exists) {
+            return false;
+        }
+
+        return key;
+    }
+}
+
 // Async CSS Loader version
 exports.version = function(root_path) {
     return load_sources(root_path).pack.version;
 };
 
+// Compress config
+var compressor;
+exports.compress = function(config, js_config, global_base = false, options = {}) {
+
+    if (!compressor) {
+        if (typeof options !== 'object') {
+            options = {};
+        }
+        compressor = new Compressor(options);
+    }
+    return JSON.stringify(compressor.compress(config, js_config, global_base));
+};
+
 // generate IIFE code for inlining (very fast via memory cache)
-exports.generate = function(modules, options) {
+exports.generate = function(modules, options = {}) {
 
     if (typeof modules === 'string') {
         modules = [modules];

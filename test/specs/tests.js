@@ -10,7 +10,7 @@ const assert = require('assert'),
     combine = require(path.resolve(__dirname, '../iife-module-combinations.js')),
     asynccss_pack = JSON.parse(fs.readFileSync(require.resolve('@style.tools/async/package.json'), 'utf8'));
 
-const test_combinations = true;
+const test_combinations = false;
 
 var sources = {};
 
@@ -221,6 +221,86 @@ describe('IIFE generator tests', function() {
 
         // remove tmp directory
         fs.rmdirSync(path.resolve(__dirname, '../tmp/'));
+
+        done();
+    });
+});
+
+
+describe('Config compressor tests', function() {
+
+    // generate IIFE
+    before(function(done) {
+
+        done();
+    });
+
+    // setup tests
+
+    it('Exposes compress() method', function(done) {
+        assert.equal(typeof iife.compress, 'function');
+        done();
+    });
+
+    it('Compress simple {href:...} object correctly', function(done) {
+        var compressed = iife.compress({
+            "href": "test.css"
+        });
+
+        assert.equal(compressed, '{"4":"test.css"}');
+
+        done();
+    });
+
+    it('Compress array with string, object and global options with base href compression', function(done) {
+        var compressed = iife.compress(["https://domain.com/test1.css", {
+            "href": "https://domain.com/test2.css",
+            "load_timing": "domReady",
+            "exec_timing": {
+                "type": "lazy",
+                "config": ".element-in-view"
+            }
+        }], false, "https://domain.com/");
+
+        assert.equal(compressed, '["test1.css",{"4":"test2.css","12":{"0":".element-in-view"}}]');
+
+        done();
+    });
+
+
+
+    it('Compress for data-c attribute with Javascript loader config at slot 4', function(done) {
+        var compressed = iife.compress(["https://domain.com/test1.css", {
+            "href": "https://domain.com/test2.css",
+            "load_timing": "domReady",
+            "exec_timing": {
+                "type": "lazy",
+                "config": ".element-in-view"
+            }
+        }], ["https://domain.com/test.js", {
+            "src": "test-dep.js",
+            "ref": "dep"
+        }, {
+            "src": "https://domain.com/test2.js",
+            "load_timing": {
+                "type": "requestAnimationFrame",
+                "frame": 4
+            },
+            "exec_timing": {
+                "type": "requestIdleCallback"
+            },
+            "dependencies": "dep",
+            "attributes": {
+                "data-custom-attr": "test"
+            }
+        }], "https://domain.com/");
+
+        assert.equal(compressed, '[["test1.css",{"4":"test2.css","12":{"0":".element-in-view"}}],0,0,0,["test.js",{"5":"test-dep.js","16":"dep"},{"0":{"8":4},"5":"test2.js","12":{},"14":{"data-custom-attr":"test"},"15":"dep"}]]');
+
+        done();
+    });
+
+    after(function(done) {
 
         done();
     });
