@@ -15,7 +15,7 @@ var iife = (function() {
             if (src in sources) {
                 return resolve(sources[src]);
             }
-            
+
             fetch('node_modules/@style.tools/async/' + src).then(function(res) {
 
                 res.text().then(function(text) {
@@ -39,6 +39,171 @@ var iife = (function() {
             return pack;
         });
     }
+
+    var _index;
+
+    function load_index() {
+
+        if (!_index) {
+            return new Promise(function(resolve, reject) {
+                _index = {};
+                get_source('src/compression-index.json').then(function(src) {
+                    var index = JSON.parse(src);
+                    for (var group in index) {
+                        if (index.hasOwnProperty(group)) {
+                            for (var i = 0, l = index[group].length; i < l; i++) {
+                                _index[index[group][i]] = i;
+                            }
+                        }
+                    }
+                    resolve(_index);
+                });
+            });
+        } else {
+            return Promise.resolve(_index);
+        }
+    }
+
+    // compress config
+    function compress(config, js_config, global_base = false) {
+
+        if (config === null) {
+            config = [];
+        }
+
+        if (typeof config === 'string') {
+            try {
+                var json = JSON.parse(config);
+                config = json;
+            } catch (e) {
+
+            }
+        }
+
+        if (!config) {
+            return config;
+        }
+
+        var compressed = [];
+
+        var is_global = false;
+        if (global_base) {
+
+            // trailingslash
+            if (global_base.substr(-1) !== '/') {
+                global_base += '/';
+            }
+        }
+
+        if (config instanceof Array) {
+            for (var i = 0, l = config.length; i < l; i++) {
+                config[i] = compress(config[i], false, global_base);
+            }
+        } else {
+
+            if (typeof config === 'object') {
+                var data;
+                for (var key in config) {
+                    if (config.hasOwnProperty(key)) {
+                        data = config[key];
+
+                        // compress base href
+                        if (['href', 'src'].indexOf(key) !== -1 && typeof data === 'string' && global_base) {
+
+                            if (data.indexOf(global_base) === 0) {
+                                data = data.replace(global_base, '', data);
+                            }
+                        }
+
+                        // cache source array
+                        if (key === 'source') {
+                            valid = ['xhr', 'cors', 'cssText'];
+                            if (typeof data === 'string' && valid.indexOf(data) !== -1) {
+                                config[key] = data = index(data);
+                            } else if (typeof data === 'object') {
+                                var value;
+                                for (var _key in data) {
+                                    if (data.hasOwnProperty(_key)) {
+                                        value = data[_key];
+                                        if (typeof value === 'string' && valid.indexOf(value) !== -1) {
+                                            data[_key] = index(value);
+                                        }
+                                    }
+                                }
+                                config[key] = data;
+                            }
+                        }
+
+                        // deep array
+                        if (typeof data === 'object' && ['proxy', 'attributes'].indexOf(key) === -1) {
+                            config[key] = data = compress(data, false, global_base);
+                        }
+
+                        // data
+                        if (typeof data === 'string' && index(data, 1) !== false &&
+                            [
+                                'href',
+                                'src',
+                                'match',
+                                'proxy',
+                                'search',
+                                'replace',
+                                'attributes'
+                            ].indexOf(key) === -1
+                        ) {
+                            config[key] = data = index[data];
+                        }
+
+                        if (index(key, 1) !== false) {
+                            config[index(key)] = data;
+
+                            delete config[key];
+                        }
+                    }
+                }
+            } else if (typeof config === 'string' && global_base) {
+                if (config.indexOf(global_base) === 0) {
+                    config = config.replace(global_base, '', config);
+                }
+            }
+        }
+
+        // add javascript loader config at data-c slot 5 t/m 8
+        if (js_config) {
+            config = [config];
+            var _compressed = [compress(js_config, false, global_base)];
+            if (_compressed) {
+                var l = 7 - (4 - _compressed.length);
+                for (var i = 0; i <= l; i++) {
+                    if (i < 4) {
+                        if (typeof config[i] === 'undefined' || !config[i]) {
+                            config[i] = 0;
+                        }
+                    } else {
+                        config[i] = _compressed[i - 4];
+                    }
+                }
+            }
+        }
+
+        return config;
+    }
+
+
+    // return compressed index by key
+    function index(key, exists) {
+
+        if (key in _index) {
+            return _index[key];
+        }
+
+        if (exists) {
+            return false;
+        }
+
+        return key;
+    }
+
 
     return {
 
@@ -331,6 +496,15 @@ var iife = (function() {
 
                     }
                 });
+            });
+        },
+
+        compress: function(config, js_config, global_base = false) {
+            return new Promise(function(resolve, reject) {
+                load_index().then(function() {
+                    var compressed = compress(config, js_config, global_base);
+                    resolve(JSON.stringify(compressed));
+                }).catch(reject);
             });
         }
     }
