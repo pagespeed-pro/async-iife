@@ -67,7 +67,7 @@ describe('IIFE generator tests', function() {
         done();
     });
 
-    it('Returns correct version', function(done) {
+    it('Returns correct version: ' + iife.version(), function(done) {
         assert.equal(iife.version(), asynccss_pack.version);
         done();
     });
