@@ -494,7 +494,7 @@ class Compressor {
                                 'attributes'
                             ].indexOf(key) === -1
                         ) {
-                            config[key] = data = this.index[data];
+                            config[key] = data = this.index(data);
                         }
 
                         if (this.index(key, 1) !== false) {
