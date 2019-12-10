@@ -460,7 +460,7 @@ class Compressor {
 
                         // cache source array
                         if (key === 'source') {
-                            valid = ['xhr', 'cors', 'cssText'];
+                            var valid = ['xhr', 'cors', 'cssText'];
                             if (typeof data === 'string' && valid.indexOf(data) !== -1) {
                                 config[key] = data = this.index(data);
                             } else if (typeof data === 'object') {
