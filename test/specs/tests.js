@@ -262,7 +262,7 @@ describe('Config compressor tests', function() {
             }
         }], false, "https://domain.com/");
 
-        assert.equal(compressed, '["test1.css",{"4":"test2.css","60":{"2":62,"89":".element-in-view"}}]');
+        assert.equal(compressed, '["test1.css",{"4":"test2.css","48":54,"60":{"2":62,"89":".element-in-view"}}]');
 
         done();
     });
@@ -293,7 +293,7 @@ describe('Config compressor tests', function() {
             }
         }], "https://domain.com/");
 
-        assert.equal(compressed, '[["test1.css",{"4":"test2.css","60":{"2":62,"89":".element-in-view"}}],0,0,0,["test.js",{"5":"test-dep.js","16":"dep"},{"5":"test2.js","14":{"data-custom-attr":"test"},"15":"dep","48":{"2":52,"56":4},"60":{"2":53}}]]');
+        assert.equal(compressed, '[["test1.css",{"4":"test2.css","48":54,"60":{"2":62,"89":".element-in-view"}}],0,0,0,["test.js",{"5":"test-dep.js","16":"dep"},{"5":"test2.js","14":{"data-custom-attr":"test"},"15":"dep","48":{"2":52,"56":4},"60":{"2":53}}]]');
 
         done();
     });
