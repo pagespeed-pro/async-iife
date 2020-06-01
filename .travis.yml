@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - "8"
+  - "13"
 
 # Use container-based Travis infrastructure.
 sudo: false
