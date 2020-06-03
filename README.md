@@ -14,7 +14,7 @@ Documentation is available on [docs.style.tools/async/iife-generator](https://do
 npm install @style.tools/async-iife
 ```
 
-## IIFE
+# IIFE
 
 IIFE ([Immediately-invoked Function Expressions](https://medium.com/@vvkchandra/essential-javascript-mastering-immediately-invoked-function-expressions-67791338ddc6)) is a coding pattern for loading a script. An IIFE can be used in the browser safely.
 
