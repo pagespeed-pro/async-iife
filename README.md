@@ -4,7 +4,7 @@
 
 A Node.js IIFE generator for [@style.tools/async](https://github.com/style-tools/async).
 
-An online version of the generator is available on [https://style.tools/iife/](https://style.tools/iife/)
+An online version of the IIFE generator is available on [https://style.tools/iife/](https://style.tools/iife/)
 
 Documentation is available on [docs.style.tools/async/iife-generator](https://docs.style.tools/async/iife-generator).
 
