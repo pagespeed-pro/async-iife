@@ -29,7 +29,7 @@ The IIFE generator can be executed as a CLI program from the command-line, as a 
 
 The provided [iife-cli.js](https://github.com/style-tools/async-iife/blob/master/iife-cli.js) script can be used from the command-line. The NPM package contains a `npm run iife` script.
 
-#### Examples
+### Examples
 
 Display usage information and a list with available modules.
 
