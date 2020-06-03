@@ -18,7 +18,7 @@ npm install @style.tools/async-iife
 
 IIFE ([Immediately-invoked Function Expressions](https://medium.com/@vvkchandra/essential-javascript-mastering-immediately-invoked-function-expressions-67791338ddc6)) is a coding pattern for loading a script. An IIFE can be used in the browser safely.
 
-The IIFE generator makes it easy to generate an IIFE with a selection of $async modules and with optimal compression. The IIFE generator provides compression via Google Closure Compiler (GCC) with _Advanced mode_ for the best performance in all browsers.
+The IIFE generator makes it easy to generate an IIFE with a selection of $async modules. The IIFE generator provides compression via Google Closure Compiler (GCC) with _Advanced mode_ for the best performance in all browsers.
 
 The IIFE generator can be executed as a CLI program from the command-line, as a Node.js module and as a browser script (see [https://style.tools/iife/](https://style.tools/iife/)).
 
