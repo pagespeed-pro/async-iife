@@ -8,8 +8,6 @@ An online version of the generator is available on [https://style.tools/iife/](h
 
 Documentation is available on [docs.style.tools/async/iife-generator](https://docs.style.tools/async/iife-generator).
 
----
-
 # Install
 
 ```bash
