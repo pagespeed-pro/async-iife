@@ -1,26 +1,29 @@
 [![Build Status](https://travis-ci.com/style-tools/async-iife.svg?branch=master)](https://travis-ci.com/style-tools/async-iife) [![Version](https://img.shields.io/github/release/style-tools/async-iife.svg)](https://github.com/style-tools/async-iife/releases) [![npm version](https://badge.fury.io/js/%40style.tools%2Fasync-iife.svg)](http://badge.fury.io/js/%40style.tools%2Fasync-iife)
 
-# IIFE generator
+# `$async` IIFE generator
 
 A Node.js IIFE generator for [@style.tools/async](https://github.com/style-tools/async).
 
-The generator is available online on [https://style.tools/iife/](https://style.tools/iife/)
+An online version of the generator is available on [https://style.tools/iife/](https://style.tools/iife/)
 
-#### Documentation is available on [docs.style.tools/async/iife-generator](https://docs.style.tools/async/iife-generator).
+Documentation is available on [docs.style.tools/async/iife-generator](https://docs.style.tools/async/iife-generator).
 
 ---
-
-IIFE ([Immediately-invoked Function Expressions](https://medium.com/@vvkchandra/essential-javascript-mastering-immediately-invoked-function-expressions-67791338ddc6)) is a coding pattern for loading a script. An IIFE can be used in the browser safely.
-
-The IIFE can be optmized using Google Closure Compiler with Advanced Optimizations for optimal compression.
-
-The Node.js module can be executed as a CLI program from the command-line.
 
 # Install
 
 ```bash
 npm install @style.tools/async-iife
 ```
+
+## IIFE
+
+IIFE ([Immediately-invoked Function Expressions](https://medium.com/@vvkchandra/essential-javascript-mastering-immediately-invoked-function-expressions-67791338ddc6)) is a coding pattern for loading a script. An IIFE can be used in the browser safely.
+
+The IIFE generator makes it easy to generate an IIFE with a selection of modules and optimal compression. The IIFE generator provides compression via Google Closure Compiler (GCC) with _Advanced mode_ for the best performance in all browsers.
+
+The IIFE generator can be executed as a CLI program from the command-line, as a Node.js module and as a browser script (see [https://style.tools/iife/](https://style.tools/iife/)).
+
 
 # Usage
 
