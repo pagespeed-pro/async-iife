@@ -20,7 +20,7 @@ IIFE ([Immediately-invoked Function Expressions](https://medium.com/@vvkchandra/
 
 The IIFE generator makes it easy to generate an IIFE with a selection of $async modules. The IIFE generator provides compression via Google Closure Compiler (GCC) with _Advanced mode_ for the best performance in all browsers.
 
-The IIFE generator can be executed as a CLI program from the command-line, as a Node.js module and as a browser script (see [https://style.tools/iife/](https://style.tools/iife/)).
+The IIFE generator can be executed as a CLI program from the command-line, as a Node.js module and as a browser script (see [https://style.tools/iife/](https://style.tools/iife/) for an online version).
 
 
 # Usage
