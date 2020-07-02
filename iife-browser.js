@@ -8,6 +8,7 @@ var iife = (function() {
 
     var pack;
     var sources = {};
+    var _root = 'node_modules/@style.tools/async/';
 
     // load file from module directory
     function get_source(src) {
@@ -16,7 +17,7 @@ var iife = (function() {
                 return resolve(sources[src]);
             }
 
-            fetch('node_modules/@style.tools/async/' + src).then(function(res) {
+            fetch(_root + src).then(function(res) {
 
                 res.text().then(function(text) {
                     sources[src] = text;
@@ -208,6 +209,10 @@ var iife = (function() {
 
 
     return {
+
+        root: function(path) {
+            _root = path;
+        },
 
         version: function() {
             return get_package().then(function(pack) {
